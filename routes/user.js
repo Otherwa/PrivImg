@@ -6,12 +6,15 @@ const preAuth = require('../config/preauth');
 const bcrypt = require('bcrypt');
 const User = require('../config/model/user')
 const jwt = require('jsonwebtoken');
+const moment = require('moment');
 /* GET users listing. */
+const multer = require('multer');
+const upload = multer(); // Create a multer instance
 
 connect();
 
 router.route('/auth/login')
-  .get(preAuth, (req, res, next) => {
+  .get((req, res, next) => {
     res.render('auth/login', { title: "Login" });
   })
   .post(async (req, res, next) => {
@@ -30,6 +33,13 @@ router.route('/auth/login')
 
       // Create a JWT token
       const token = jwt.sign({ userId: user._id }, 'Tatakae', { expiresIn: '1h' });
+
+      // user details
+      req.session.user = {
+        userId: user._id,
+        email: user.email, // You can store more user-related information as needed
+        accountCreatedAt: moment(user.createdAt).format('LL')
+      };
 
       // Set the token as a cookie or in the response header as needed
       res.cookie('token', token); // You can also use res.setHeader('Authorization', `Bearer ${token}`);
@@ -61,10 +71,20 @@ router.route('/auth/register')
 
 router.route('/dashboard')
   .get(Auth, (req, res) => {
+
     // You can access req.userId here, which contains the authenticated user's ID
-    res.render('user/dashboard', { title: 'Dashboard' });
+    res.render('user/dashboard', { User: req.session.user });
   });
 
+router.route('/upload')
+  .get(Auth, (req, res) => {
+    res.status(200).render('user/upload', { User: req.session.user });
+  })
+  .post(Auth, upload.single('compressedImage'), (req, res, next) => {
+
+    console.log(req.body);
+    res.status(200).json({ 'status': 200 });
+  })
 
 // ? logout
 router.get('/auth/logout', (req, res) => {

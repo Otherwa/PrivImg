@@ -5,10 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.css" rel="stylesheet" />
+
     <link href="/dist/output.css" rel="stylesheet">
+    <style>
+        #dash_hero {
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
 </head>
 
 <body class="p-2 bg-gray-50 dark:bg-gray-700">
+    <!-- Header -->
     <!-- Header -->
     <nav class="bg-white border-gray-200 dark:bg-gray-700">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -95,19 +106,140 @@
         </div>
     </aside>
 
-    <div class="p-4">
-        <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-            <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-                <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 1v16M1 9h16" />
-                    </svg>
-                </p>
+    <div class="p-4"
+        style="height: 85vh;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+        <div class="flex justify-center mt-8">
+            <div class="max-w-2xl rounded-lg shadow-xl bg-gray-50">
+                <div class="m-4">
+                    <label class="inline-block mb-2 text-gray-500">File Upload</label>
+                    <div class="flex items-center justify-center w-full">
+                        <label
+                            class="flex flex-col w-full h-32 border-4 border-blue-200 border-dashed hover:bg-gray-100 hover:border-gray-300">
+                            <div class="flex flex-col items-center justify-center pt-7" id="hide">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="w-8 h-8 text-gray-400 group-hover:text-gray-600" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                </svg>
+                                <p class="pt-1 text-sm tracking-wider text-gray-400 group-hover:text-gray-600">
+                                    Attach a file</p>
+                            </div>
+                            <input id="fileInput" type="file" class="opacity-0" accept="image/*" />
+                        </label>
+                    </div>
+                    <div id="previewArea" class="mt-4"></div>
+                </div>
+                <div class="flex justify-center p-2">
+                    <button id="uploadButton"
+                        class="w-full px-4 py-2 text-white bg-blue-500 rounded shadow-xl">Upload</button>
+                </div>
             </div>
         </div>
     </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/browser-image-compression/1.0.9/browser-image-compression.js"
+        integrity="sha512-8ZZABMxONy31dC8IlKGRbB3Dk14Ghapvgav9yvX1hXXwoSihen1WdHf6V9jDxeJNvobkMxht2iPUrvkgG1jJXg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+        integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const previewArea = document.getElementById('previewArea');
+        const uploadButton = document.getElementById('uploadButton');
+        const txt = document.getElementById('hide');
+
+        fileInput.addEventListener('change', async function (event) {
+            const selectedFile = event.target.files[0];
+
+            try {
+                const compressedBase64 = await compressImageToBase64(selectedFile);
+                const imagePreview = document.createElement('img');
+                imagePreview.src = compressedBase64;
+                imagePreview.className = 'max-w-full h-auto';
+                previewArea.innerHTML = ''; // Clear previous preview
+                txt.innerHTML = ''; // Clear previous preview
+                previewArea.appendChild(imagePreview);
+
+                // Enable the upload button
+                uploadButton.disabled = false;
+
+                // Set the compressed base64 data to a data attribute for later use
+                uploadButton.setAttribute('data-compressed', compressedBase64);
+            } catch (error) {
+                console.error('Image compression error:', error);
+            }
+        });
+
+        uploadButton.addEventListener('click', async function () {
+            const compressedFileData = uploadButton.getAttribute('data-compressed');
+
+            if (compressedFileData) {
+                try {
+                    console.log(compressedFileData);
+                    base64Data = compressedFileData.replace(/^data:image\/\w+;base64,/, '')
+                    // Send the compressed image data to the server
+                    if (base64Data) {
+                        try {
+                            console.log(base64Data);
+                            const formData = new FormData();
+                            formData.append('compressedImage', base64Data);
+                            $.ajax({
+                                url: '/user/upload',
+                                type: 'POST',
+                                data: formData, // Use the FormData object directly
+                                contentType: false, // Let the browser set the content type
+                                processData: false, // Prevent jQuery from processing the data
+                                success: function (responseData) {
+                                    console.log('Server response:', responseData);
+                                },
+                                error: function (error) {
+                                    console.error('Upload error:', error);
+                                }
+                            });
+                        } catch (error) {
+                            console.error('Upload error:', error);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Upload error:', error);
+                }
+            }
+        });
+
+        async function compressImageToBase64(file) {
+            const options = {
+                maxSizeMB: 1, // Adjust the maximum file size as needed
+                maxWidthOrHeight: 800 // Maximum width or height after compression
+            };
+
+            try {
+                const compressedFile = await imageCompression(file, options);
+
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+
+                    reader.onload = function () {
+                        const base64DataUrl = reader.result;
+                        resolve(base64DataUrl);
+                    };
+
+                    reader.onerror = function (error) {
+                        reject(error);
+                    };
+
+                    reader.readAsDataURL(compressedFile);
+                });
+            } catch (error) {
+                throw error;
+            }
+        }
+
+    </script>
+    <!-- plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
 </body>
 

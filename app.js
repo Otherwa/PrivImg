@@ -7,8 +7,15 @@ const bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
+const session = require('express-session');
 
 var app = express();
+
+app.use(session({
+  secret: 'Tatakae',
+  resave: true,
+  saveUninitialized: true
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
