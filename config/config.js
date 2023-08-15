@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
-const URL = `mongodb+srv://atharvdesai:CM658DS40OXdIHH7@cluster0.smf3kdb.mongodb.net/?retryWrites=true&w=majority`;
+require('dotenv').config()
+const URL = process.env.MONGO;
 
 async function connect() {
     mongoose.set("strictQuery", false);

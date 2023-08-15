@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-
+require('dotenv').config()
 const verifyToken = (req, res, next) => {
     const token = req.cookies.token || ''; // Get the token from the cookie or header as needed
 
@@ -8,7 +8,7 @@ const verifyToken = (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(token, 'Tatakae'); // Verify the token
+        const decoded = jwt.verify(token, process.env.SECRET_KEY); // Verify the token
         req.userId = decoded.userId; // Store the user ID in the request object
         next(); // Continue to the next middleware or route handler
     } catch (error) {

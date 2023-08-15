@@ -4,15 +4,15 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const bodyParser = require('body-parser');
-
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
 const session = require('express-session');
+require('dotenv').config()
 
 var app = express();
 
 app.use(session({
-  secret: 'Tatakae',
+  secret: process.env.SECRET_KEY,
   resave: true,
   saveUninitialized: true
 }));
