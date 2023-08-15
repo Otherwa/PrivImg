@@ -4,12 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.css" rel="stylesheet" />
   <link href="/dist/output.css" rel="stylesheet">
 </head>
 
 <body class="p-2 bg-gray-50 dark:bg-gray-700">
   <!-- navbar -->
-  <nav class="bg-white border-gray-200 dark:bg-gray-700">
+
+  <nav>
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
       <a href="/" class="flex items-center">
         <svg xmlns="http://www.w3.org/2000/svg" height="2em"
@@ -24,35 +26,42 @@
         </svg>
         <span class="ml-2 self-center text-2xl font-semibold whitespace-nowrap dark:text-white">PrivImg</span>
       </a>
-      <div class="flex md:order-2">
-        <a href="./user/auth/register"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Get
-          started</a>
+      <button data-collapse-toggle="navbar-hamburger" type="button"
+        class="inline-flex items-center justify-center p-2 w-10 h-10 ml-3 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        aria-controls="navbar-hamburger" aria-expanded="false">
+        <span class="sr-only">Open main menu</span>
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M1 1h15M1 7h15M1 13h15" />
+        </svg>
+      </button>
+      <div class="hidden w-full" id="navbar-hamburger">
+        <ul class="flex flex-col font-medium mt-4 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+          <li>
+            <a href="./user/auth/login"
+              class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white">Login</a>
+          </li>
+          <li>
+            <a href="./user/auth/register"
+              class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Register</a>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
+
 
   <!-- content -->
   <section class="bg-white dark:bg-gray-700">
     <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
       <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12 mb-8">
-        <a href="#"
-          class="bg-blue-100 text-blue-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-blue-400 mb-2">
-          <svg class="w-2.5 h-2.5 mr-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-            viewBox="0 0 20 14">
-            <path
-              d="M11 0H2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm8.585 1.189a.994.994 0 0 0-.9-.138l-2.965.983a1 1 0 0 0-.685.949v8a1 1 0 0 0 .675.946l2.965 1.02a1.013 1.013 0 0 0 1.032-.242A1 1 0 0 0 20 12V2a1 1 0 0 0-.415-.811Z" />
-          </svg>
-          Tutorial
-        </a>
-        <h1 class="text-gray-900 dark:text-white text-3xl md:text-5xl font-extrabold mb-2">How to quickly deploy a
-          static website</h1>
-        <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-6">Static websites are now used to bootstrap
-          lots of websites and are becoming the basis for a variety of tools that even influence both web designers and
-          developers.</p>
-        <a href="#"
+        <h1 class="text-gray-900 dark:text-white text-3xl md:text-5xl font-extrabold mb-2">Introducing PrvImage: Your
+          Self-Hosted Image Storage Solution</h1>
+        <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-6">PrvImage offers a secure and efficient way
+          to host and manage your images, giving you full control over your visual assets.</p>
+        <a href=""
           class="inline-flex justify-center items-center py-2.5 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
-          Read more
+          Learn More
           <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
             viewBox="0 0 14 10">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -64,20 +73,14 @@
         <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12">
           <a href="#"
             class="bg-green-100 text-green-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 mb-2">
-            <svg class="w-2.5 h-2.5 mr-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-              viewBox="0 0 18 18">
-              <path
-                d="M17 11h-2.722L8 17.278a5.512 5.512 0 0 1-.9.722H17a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1ZM6 0H1a1 1 0 0 0-1 1v13.5a3.5 3.5 0 1 0 7 0V1a1 1 0 0 0-1-1ZM3.5 15.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2ZM16.132 4.9 12.6 1.368a1 1 0 0 0-1.414 0L9 3.55v9.9l7.132-7.132a1 1 0 0 0 0-1.418Z" />
-            </svg>
-            Design
+            <!-- Change the SVG icon here to match the concept of PrvImage -->
           </a>
-          <h2 class="text-gray-900 dark:text-white text-3xl font-extrabold mb-2">Start with Flowbite Design System</h2>
-          <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">Static websites are now used to bootstrap
-            lots of websites and are becoming the basis for a variety of tools that even influence both web designers
-            and developers.</p>
+          <h2 class="text-gray-900 dark:text-white text-3xl font-extrabold mb-2">Secure Image Hosting with PrvImage</h2>
+          <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">PrvImage Design System empowers you to
+            seamlessly integrate and showcase your images while maintaining privacy and control.</p>
           <a href="#"
-            class="text-blue-600 dark:text-blue-500 hover:underline font-medium text-lg inline-flex items-center">Read
-            more
+            class="text-blue-600 dark:text-blue-500 hover:underline font-medium text-lg inline-flex items-center">Learn
+            More
             <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
               viewBox="0 0 14 10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -88,21 +91,15 @@
         <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12">
           <a href="#"
             class="bg-purple-100 text-purple-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-purple-400 mb-2">
-            <svg class="w-2.5 h-2.5 mr-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-              viewBox="0 0 20 16">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M5 4 1 8l4 4m10-8 4 4-4 4M11 1 9 15" />
-            </svg>
-            Code
+            <!-- Change the SVG icon here to match the concept of PrvImage -->
           </a>
-          <h2 class="text-gray-900 dark:text-white text-3xl font-extrabold mb-2">Best react libraries around the web
+          <h2 class="text-gray-900 dark:text-white text-3xl font-extrabold mb-2">Seamless Integration with PrvImage API
           </h2>
-          <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">Static websites are now used to bootstrap
-            lots of websites and are becoming the basis for a variety of tools that even influence both web designers
-            and developers.</p>
+          <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">Explore the best practices of using
+            PrvImage's APIs to enhance your web and app experiences through efficient image management.</p>
           <a href="#"
-            class="text-blue-600 dark:text-blue-500 hover:underline font-medium text-lg inline-flex items-center">Read
-            more
+            class="text-blue-600 dark:text-blue-500 hover:underline font-medium text-lg inline-flex items-center">Learn
+            More
             <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
               viewBox="0 0 14 10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -115,8 +112,9 @@
   </section>
 
 
+
   <!-- banner -->
-  <div id="bottom-banner" tabindex="-1"
+  <!-- <div id="bottom-banner" tabindex="-1"
     class="fixed bottom-0 left-0 z-50 flex justify-between w-full p-4 border-t border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
     <div class="flex items-center mx-auto">
       <p class="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
@@ -148,12 +146,42 @@
         <span class="sr-only">Close banner</span>
       </button>
     </div>
-  </div>
+  </div> -->
   <!-- banner -->
 
-  <!-- chart -->
+  <!-- cookies -->
+  <section
+    class="fixed max-w-2xl p-4 mx-auto bg-white border border-gray-200 md:gap-x-4 left-12 bottom-16 dark:bg-gray-900 md:flex md:items-center dark:border-gray-700 rounded-2xl">
+    <div class="flex items-center gap-x-4">
+      <span class="inline-flex p-2 text-blue-500 rounded-lg shrink-0 dark:bg-gray-800 bg-blue-100/80">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M17.9803 8.5468C17.5123 8.69458 17.0197 8.7931 16.5271 8.7931C14.2118 8.76847 12.3399 6.89655 12.3153 4.58128C12.3153 4.13793 12.3892 3.69458 12.537 3.27586C11.9951 2.68473 11.6995 1.92118 11.6995 1.13301C11.6995 0.812808 11.7488 0.492611 11.8473 0.172414C11.2315 0.0738918 10.6158 0 10 0C4.48276 0 0 4.48276 0 10C0 15.5172 4.48276 20 10 20C15.5172 20 20 15.5172 20 10C20 9.77833 20 9.55665 19.9754 9.33498C19.2611 9.26108 18.5468 8.99015 17.9803 8.5468ZM4.58128 7.31527C6.30542 7.31527 6.30542 10.0246 4.58128 10.0246C2.85714 10.0246 2.61084 7.31527 4.58128 7.31527ZM6.05912 15.7635C4.08867 15.7635 4.08867 12.8079 6.05912 12.8079C8.02956 12.8079 8.02956 15.7635 6.05912 15.7635ZM9.01478 1.33005C10.7389 1.33005 10.7389 4.28571 9.01478 4.28571C7.29064 4.28571 7.04434 1.33005 9.01478 1.33005ZM10.2463 8.84237C11.7241 8.84237 11.7241 10.8128 10.2463 10.8128C8.76848 10.8128 9.01478 8.84237 10.2463 8.84237ZM11.9704 16.9458C10.4926 16.9458 10.4926 14.9754 11.9704 14.9754C13.4483 14.9754 13.202 16.9458 11.9704 16.9458ZM16.6503 13.1034C15.4187 13.1034 15.4187 11.133 16.6503 11.133C17.8818 11.133 17.8818 13.1034 16.6503 13.1034Z"
+            fill="currentColor" />
+        </svg>
+      </span>
+
+      <p class="text-sm text-gray-600 dark:text-gray-300">We use cookies to ensure that we give you the best experience
+        on our website. <a href="#" class="text-blue-500 hover:underline">Read cookies policies</a>. </p>
+    </div>
+
+    <div class="flex items-center mt-6 gap-x-4 shrink-0 lg:mt-0">
+      <button
+        class="w-1/2 text-xs text-gray-800 underline transition-colors duration-300 md:w-auto dark:text-white dark:hover:text-gray-400 hover:text-gray-600 focus:outline-none">
+        Cookie Setting
+      </button>
+
+      <button
+        class=" text-xs w-1/2 md:w-auto font-medium bg-gray-800 rounded-lg hover:bg-gray-700 text-white px-4 py-2.5 duration-300 transition-colors focus:outline-none">
+        Accept All Cookies
+      </button>
+    </div>
+  </section>
 
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.3.0/alpine-ie11.js"
+    integrity="sha512-6m6AtgVSg7JzStQBuIpqoVuGPVSAK5Sp/ti6ySu6AjRDa1pX8mIl1TwP9QmKXU+4Mhq/73SzOk6mbNvyj9MPzQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
 </body>
 
