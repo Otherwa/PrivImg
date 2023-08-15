@@ -70,20 +70,113 @@ router.route('/auth/register')
 
 
 router.route('/dashboard')
-  .get(Auth, (req, res) => {
-
+  .get(Auth, async (req, res) => {
+    const user = await User.findOne({ _id: req.session.user.userId }).limit(10);
     // You can access req.userId here, which contains the authenticated user's ID
-    res.render('user/dashboard', { User: req.session.user });
-  });
+    // timestamp process
+    user.images.forEach((image) => {
+      image.createdAt = moment(image.createdAt).format("MMM Do YY");
+    })
+    res.render('user/dashboard', { User: req.session.user, images: user.images });
+  })
+  .delete(Auth, async (req, res) => {
+    try {
+      const userId = req.session.user.userId;
+      const imageIdToDelete = req.body.imageId; // Assuming you pass the imageId in the request body
+
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: userId },
+        { $pull: { images: { _id: imageIdToDelete } } },
+        { new: true }
+      );
+
+      if (!updatedUser) {
+        return res.status(404).json({ status: 404, message: 'User not found' });
+      }
+
+      // Format timestamps in images
+      updatedUser.images.forEach((image) => {
+        image.uploadedAtFormatted = moment(image.uploadedAt).format("MMM Do YYYY");
+      });
+
+      res.status(200).json({ status: 200, user: updatedUser });
+    } catch (error) {
+      console.error('Image deletion error:', error);
+      res.status(500).json({ status: 500, error: 'Image deletion error' });
+    }
+  })
+
+// view
+router.get('/dashboard/image/:id', async (req, res, next) => {
+  try {
+    const userId = req.session.user.userId;
+    const imageId = req.params.id;
+
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+      return res.status(404).json({ status: 404, message: 'User not found' });
+    }
+
+    const image = user.images.find(img => img._id.toString() === imageId);
+    image.uploadedAt = moment(image.uploadedAt).format('LL');
+    if (!image) {
+      return res.status(404).json({ status: 404, message: 'Image not found' });
+    }
+    res.status(200).render('user/img', { User: req.session.user, image: image });
+  } catch (error) {
+    console.error('Image retrieval error:', error);
+    res.status(500).json({ status: 500, error: 'Image retrieval error' });
+  }
+});
+
+// delete
+router.delete('/dashboard/image/:id', async (req, res, next) => {
+  try {
+    const userId = req.session.user.userId;
+    const imageId = req.params.id;
+
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId },
+      { $pull: { images: { _id: imageId } } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ status: 404, message: 'User not found' });
+    }
+
+    res.status(200).json({ status: 200, message: 'Image deleted successfully' });
+  } catch (error) {
+    console.error('Image deletion error:', error);
+    res.status(500).json({ status: 500, error: 'Image deletion error' });
+  }
+});
+
 
 router.route('/upload')
   .get(Auth, (req, res) => {
     res.status(200).render('user/upload', { User: req.session.user });
   })
-  .post(Auth, upload.single('compressedImage'), (req, res, next) => {
+  .post(Auth, upload.single('compressedImage'), async (req, res, next) => {
+    try {
+      const compressedImage = req.body.compressedImage;
+      const newImage = {
+        imageUrl: compressedImage,
+        uploadedAt: new Date()
+      };
 
-    console.log(req.body);
-    res.status(200).json({ 'status': 200 });
+      // Find the user by ID and update the images sub-array
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: req.session.user.userId },
+        { $push: { images: newImage } },
+        { new: true } // Return the updated document
+      );
+
+      res.status(200).json({ status: 200 });
+    } catch (error) {
+      console.error('Image upload error:', error);
+      res.status(500).json({ status: 500, error: 'Image upload error' });
+    }
   })
 
 // ? logout

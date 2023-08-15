@@ -34,21 +34,23 @@
                 <li>
                     <div class="flex items-center space-x-4">
                         <div class="font-medium dark:text-white">
-                            <span
-                                class="bg-blue-100 m-2 text-sm text-blue-800 font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
-                                <%= User.email %>
-                            </span>
-                            <span
-                                class="bg-gray-100 m-2 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded mr-2 dark:bg-gray-700 dark:text-gray-400 border border-gray-500">
-                                <svg class="w-2.5 h-2.5 mr-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor" viewBox="0 0 20 20">
-                                    <path
-                                        d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
-                                </svg>
-                                <%= User.accountCreatedAt %>
-                            </span>
+                            <div class="px-2">
+                                <span
+                                    class="bg-blue-100 m-2 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                    <%= User.email %>
+                                </span>
+                                <span
+                                    class="bg-gray-100 m-2 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded mr-2 dark:bg-gray-700 dark:text-gray-400 border border-gray-500">
+                                    <svg class="w-2.5 h-2.5 mr-1.5" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
+                                    </svg>
+                                    <%= User.accountCreatedAt %>
+                                </span>
+                            </div>
+
                         </div>
-                    </div>
                 </li>
                 <li>
                     <a href="/user/dashboard"
@@ -79,7 +81,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="./auth/logout"
+                    <a href="/auth/logout"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
@@ -93,38 +95,58 @@
         </div>
     </aside>
 
-    <div class="px-8">
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <% if (images.length===0) { %>
-                <h1
-                    class="mb-4 py-8 px-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-                    No Images Available</h1>
-                <% } else { %>
-                    <% images.forEach(image=> { %>
-                        <div>
-                            <div class="py-2">
-                                <a href="./dashboard/image/<%= image._id %>">
-                                    <img class="h-auto max-w-full rounded-lg"
-                                        src="data:image/png;base64,<%= image.imageUrl %>" alt="img">
-                                </a>
-                            </div>
-                            <span
-                                class="bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded mr-2 dark:bg-gray-700 dark:text-gray-400 border border-gray-500">
-                                <svg class="w-2.5 h-2.5 mr-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor" viewBox="0 0 20 20">
-                                    <path
-                                        d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
-                                </svg>
-                                <%= image.createdAt %>
-                            </span>
-                        </div>
-                        <% }); %>
-                            <% } %>
+    <div class="px-8"
+        style="height: 84vh;display: flex;flex-direction: column;align-items: center;justify-content: center;">
+        <div class="grid justify-center">
+            <div>
+                <div class="py-2">
+                    <img class="h-auto max-w-full rounded-lg" src="data:image/png;base64,<%= image.imageUrl %>"
+                        alt="img">
+                </div>
+                <span
+                    class="bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded mr-2 dark:bg-gray-700 dark:text-gray-400 border border-gray-500">
+                    <svg class="w-2.5 h-2.5 mr-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
+                    </svg>
+                    <%= image.uploadedAt %>
+                </span>
+            </div>
+            <br>
+            <div class="flex overflow-hidden bg-white border divide-x rounded-lg rtl:flex-row-reverse dark:bg-gray-900 dark:border-gray-700 dark:divide-gray-700"
+                style="width:fit-content">
+                <a href="<%= image.imageUrl %>" download
+                    class="px-4 py-2 bg-yellow-300 text-sm font-medium text-black-600 transition-colors duration-200 sm:text-base sm:px-6 dark:hover:bg-black-800 dark:text-black-300 hover:bg-gray-100">
+                    Download
+                </a>
+                <button onclick="deleteImage('<%= image._id %>')"
+                    class="px-4 py-2 bg-red-600 text-sm font-medium text-gray-600 transition-colors duration-200 sm:text-base sm:px-6 dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
+                    Delete
+                </button>
+            </div>
         </div>
 
-
     </div>
-
+    <script>
+        function deleteImage(imageId) {
+            if (confirm("Are you sure you want to delete this image?")) {
+                fetch(`/user/dashboard/image/${imageId}`, {
+                    method: 'DELETE',
+                }).then(response => {
+                    if (response.ok) {
+                        // Handle success, for example, reload the page
+                        window.location.replace('/user/dashboard');
+                    } else {
+                        // Handle error
+                        console.error('Image deletion error:', response.statusText);
+                    }
+                }).catch(error => {
+                    console.error('Image deletion error:', error);
+                });
+            }
+        }
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
 </body>
 

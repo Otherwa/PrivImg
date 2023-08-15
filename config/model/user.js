@@ -11,6 +11,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    images: [
+        {
+            imageUrl: String,
+            uploadedAt: Date
+        }
+    ]
 }, {
     timestamps: true // Add timestamps fields: createdAt and updatedAt
 });

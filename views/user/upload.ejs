@@ -45,23 +45,21 @@
                 <li>
                     <div class="flex items-center space-x-4">
                         <div class="font-medium dark:text-white">
-                            <div class="p-2">
-                                <span
-                                    class="bg-blue-100 m-2 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
-                                    <%= User.email %>
-                                </span>
-                                <span
-                                    class="bg-gray-100 m-2 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded mr-2 dark:bg-gray-700 dark:text-gray-400 border border-gray-500">
-                                    <svg class="w-2.5 h-2.5 mr-1.5" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                        <path
-                                            d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
-                                    </svg>
-                                    <%= User.accountCreatedAt %>
-                                </span>
-                            </div>
-
+                            <span
+                                class="bg-blue-100 m-2 text-sm text-blue-800 font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                <%= User.email %>
+                            </span>
+                            <span
+                                class="bg-gray-100 m-2 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded mr-2 dark:bg-gray-700 dark:text-gray-400 border border-gray-500">
+                                <svg class="w-2.5 h-2.5 mr-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
+                                </svg>
+                                <%= User.accountCreatedAt %>
+                            </span>
                         </div>
+                    </div>
                 </li>
                 <li>
                     <a href="/user/dashboard"
@@ -106,15 +104,40 @@
         </div>
     </aside>
 
+    <!-- toast -->
     <div class="p-4"
         style="height: 85vh;display: flex;flex-direction: column;justify-content: center;align-items: center;">
-        <div class="flex justify-center mt-8">
-            <div class="max-w-2xl rounded-lg shadow-xl bg-gray-50">
+        <div id="toast-success"
+            class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
+            role="alert" style="display: none;">
+            <div
+                class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                    viewBox="0 0 20 20">
+                    <path
+                        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                </svg>
+                <span class="sr-only">Check icon</span>
+            </div>
+            <div class="ml-3 text-sm font-normal">Image Upload Successfully.</div>
+            <button type="button"
+                class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+                data-dismiss-target="#toast-success" aria-label="Close">
+                <span class="sr-only">Close</span>
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                </svg>
+            </button>
+        </div>
+        <div class="flex justify-center mt-8 ">
+            <div class="max-w-2xl rounded-lg shadow-xl bg-gray-50 dark:bg-gray-800">
                 <div class="m-4">
                     <label class="inline-block mb-2 text-gray-500">File Upload</label>
                     <div class="flex items-center justify-center w-full">
                         <label
-                            class="flex flex-col w-full h-32 border-4 border-blue-200 border-dashed hover:bg-gray-100 hover:border-gray-300">
+                            class="flex flex-col w-full h-32 border-4  border-dashed dark:bg-gray-900 p-4 rounded-md">
                             <div class="flex flex-col items-center justify-center pt-7" id="hide">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="w-8 h-8 text-gray-400 group-hover:text-gray-600" fill="none"
@@ -150,65 +173,8 @@
         const previewArea = document.getElementById('previewArea');
         const uploadButton = document.getElementById('uploadButton');
         const txt = document.getElementById('hide');
-
-        fileInput.addEventListener('change', async function (event) {
-            const selectedFile = event.target.files[0];
-
-            try {
-                const compressedBase64 = await compressImageToBase64(selectedFile);
-                const imagePreview = document.createElement('img');
-                imagePreview.src = compressedBase64;
-                imagePreview.className = 'max-w-full h-auto';
-                previewArea.innerHTML = ''; // Clear previous preview
-                txt.innerHTML = ''; // Clear previous preview
-                previewArea.appendChild(imagePreview);
-
-                // Enable the upload button
-                uploadButton.disabled = false;
-
-                // Set the compressed base64 data to a data attribute for later use
-                uploadButton.setAttribute('data-compressed', compressedBase64);
-            } catch (error) {
-                console.error('Image compression error:', error);
-            }
-        });
-
-        uploadButton.addEventListener('click', async function () {
-            const compressedFileData = uploadButton.getAttribute('data-compressed');
-
-            if (compressedFileData) {
-                try {
-                    console.log(compressedFileData);
-                    base64Data = compressedFileData.replace(/^data:image\/\w+;base64,/, '')
-                    // Send the compressed image data to the server
-                    if (base64Data) {
-                        try {
-                            console.log(base64Data);
-                            const formData = new FormData();
-                            formData.append('compressedImage', base64Data);
-                            $.ajax({
-                                url: '/user/upload',
-                                type: 'POST',
-                                data: formData, // Use the FormData object directly
-                                contentType: false, // Let the browser set the content type
-                                processData: false, // Prevent jQuery from processing the data
-                                success: function (responseData) {
-                                    console.log('Server response:', responseData);
-                                },
-                                error: function (error) {
-                                    console.error('Upload error:', error);
-                                }
-                            });
-                        } catch (error) {
-                            console.error('Upload error:', error);
-                        }
-                    }
-                } catch (error) {
-                    console.error('Upload error:', error);
-                }
-            }
-        });
-
+        const temp_data = txt.innerHTML;
+        // Compress image to base64 function
         async function compressImageToBase64(file) {
             const options = {
                 maxSizeMB: 1, // Adjust the maximum file size as needed
@@ -237,6 +203,71 @@
             }
         }
 
+        // Event listener for fileInput
+        fileInput.addEventListener('change', async function (event) {
+            const selectedFile = event.target.files[0];
+            try {
+                const compressedBase64 = await compressImageToBase64(selectedFile);
+                const imagePreview = document.createElement('img');
+                imagePreview.src = compressedBase64;
+                imagePreview.className = 'max-w-full h-auto';
+                previewArea.innerHTML = ''; // Clear previous preview
+                txt.innerHTML = ''; // Clear previous preview
+                previewArea.appendChild(imagePreview);
+
+                // Enable the upload button
+                uploadButton.disabled = false;
+
+                // Set the compressed base64 data to a data attribute for later use
+                uploadButton.setAttribute('data-compressed', compressedBase64);
+            } catch (error) {
+                console.error('Image compression error:', error);
+            }
+        });
+
+        // Event listener for uploadButton
+        uploadButton.addEventListener('click', async function () {
+            const compressedFileData = uploadButton.getAttribute('data-compressed');
+
+            if (compressedFileData) {
+                try {
+                    console.log(compressedFileData);
+                    const base64Data = compressedFileData.replace(/^data:image\/\w+;base64,/, '');
+
+                    // Send the compressed image data to the server
+                    if (base64Data) {
+                        try {
+                            console.log(base64Data);
+                            const formData = new FormData();
+                            formData.append('compressedImage', base64Data);
+
+                            $.ajax({
+                                url: '/user/upload',
+                                type: 'POST',
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                success: function (responseData) {
+                                    console.log('Server response:', responseData);
+                                    if (responseData.status == 200) {
+                                        $("#toast-success").fadeIn();
+                                        txt.innerHTML = temp_data;
+                                        previewArea.innerHTML = "";
+                                    }
+                                },
+                                error: function (error) {
+                                    console.error('Upload error:', error);
+                                }
+                            });
+                        } catch (error) {
+                            console.error('Upload error:', error);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Upload error:', error);
+                }
+            }
+        });
     </script>
     <!-- plugin -->
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
