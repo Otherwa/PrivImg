@@ -8,13 +8,13 @@
     <link href="/dist/output.css" rel="stylesheet">
 </head>
 
-<body class="p-2 bg-gray-50 dark:bg-gray-700">
+<body class="p-2 bg-gray-50 dark:bg-black" style="height: 150vh;">
     <!-- Header -->
-    <nav class="bg-white border-gray-200 dark:bg-gray-700">
+    <nav class="bg-white border-gray-200 dark:bg-black">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto lg:p-4">
             <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar"
                 aria-controls="default-sidebar" type="button"
-                class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-black dark:focus:ring-gray-600">
                 <span class="sr-only">Open sidebar</span>
                 <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg">
@@ -29,18 +29,18 @@
     <aside id="default-sidebar"
         class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
         aria-label="Sidebar">
-        <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+        <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-black">
             <ul class="space-y-2 font-medium">
                 <li>
                     <div class="flex items-center space-x-4">
                         <div class="font-medium dark:text-white">
                             <div class="px-2">
                                 <span
-                                    class="bg-blue-100 m-2 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                    class="bg-blue-100 m-2 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-black dark:text-blue-400 border border-blue-400">
                                     <%= User.email %>
                                 </span>
                                 <span
-                                    class="bg-gray-100 m-2 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded mr-2 dark:bg-gray-700 dark:text-gray-400 border border-gray-500">
+                                    class="bg-gray-100 m-2 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded mr-2 dark:bg-black dark:text-gray-400 border border-gray-500">
                                     <svg class="w-2.5 h-2.5 mr-1.5" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                         <path
@@ -54,7 +54,7 @@
                 </li>
                 <li>
                     <a href="/user/dashboard"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-black group">
                         <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                             viewBox="0 0 22 21">
@@ -68,7 +68,7 @@
                 </li>
                 <li>
                     <a href="./upload"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-black group">
                         <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                             viewBox="0 0 18 18">
@@ -77,12 +77,12 @@
                         </svg>
                         <span class="flex-1 ml-3 whitespace-nowrap">Upload</span>
                         <span
-                            class="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">(Beta)</span>
+                            class="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-black dark:text-gray-300">(Beta)</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/auth/logout"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <a href="/user/auth/logout"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-black group">
                         <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -96,7 +96,7 @@
     </aside>
 
     <div class="px-8"
-        style="height: 84vh;display: flex;flex-direction: column;align-items: center;justify-content: center;">
+        style="height: 84vh;margin-top:12rem;display: flex;flex-direction: column;align-items: center;justify-content: center;">
         <div class="grid justify-center">
             <div>
                 <div class="py-2">
@@ -104,7 +104,7 @@
                         alt="img">
                 </div>
                 <span
-                    class="bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded mr-2 dark:bg-gray-700 dark:text-gray-400 border border-gray-500">
+                    class="bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded mr-2 dark:bg-black dark:text-gray-400 border border-gray-500">
                     <svg class="w-2.5 h-2.5 mr-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                         fill="currentColor" viewBox="0 0 20 20">
                         <path
@@ -116,12 +116,12 @@
             <br>
             <div class="flex overflow-hidden bg-white border divide-x rounded-lg rtl:flex-row-reverse dark:bg-gray-900 dark:border-gray-700 dark:divide-gray-700"
                 style="width:fit-content">
-                <a href="<%= image.imageUrl %>" download
+                <a href="data:image/png;base64,<%= image.imageUrl %>" download
                     class="px-4 py-2 bg-yellow-300 text-sm font-medium text-black-600 transition-colors duration-200 sm:text-base sm:px-6 dark:hover:bg-black-800 dark:text-black-300 hover:bg-gray-100">
                     Download
                 </a>
                 <button onclick="deleteImage('<%= image._id %>')"
-                    class="px-4 py-2 bg-red-600 text-sm font-medium text-gray-600 transition-colors duration-200 sm:text-base sm:px-6 dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
+                    class="px-4 py-2 bg-red-600 text-sm font-medium text-gray-600 transition-colors duration-200 sm:text-base sm:px-6 dark:hover:bg-black dark:text-gray-300 hover:bg-gray-100">
                     Delete
                 </button>
             </div>
