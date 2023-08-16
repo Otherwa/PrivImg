@@ -105,18 +105,18 @@
                             <a href="./dashboard/image/<%= image._id %>">
                                 <img class="h-auto w-full rounded-lg" src="data:image/png;base64,<%= image.imageUrl %>"
                                     alt="img">
+                                <div
+                                    class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent px-4 py-2 rounded-b-lg text-white text-xs">
+                                    <h3
+                                        class="mb-4 font-extrabold leading-none tracking-tight text-gray-900 md:text-2xl lg:text-4xl dark:text-white">
+                                        <%= image.createdAt %>
+                                    </h3>
                             </a>
-                            <div
-                                class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent px-4 py-2 rounded-b-lg text-white text-xs">
-                                <h3
-                                    class="mb-4 font-extrabold leading-none tracking-tight text-gray-900 md:text-2xl lg:text-4xl dark:text-white">
-                                    <%= image.createdAt %>
-                                </h3>
-                            </div>
                         </div>
-                        <% }); %>
-                            <% } %>
         </div>
+        <% }); %>
+            <% } %>
+    </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
