@@ -75,7 +75,7 @@ router.route('/dashboard')
     // You can access req.userId here, which contains the authenticated user's ID
     // timestamp process
     user.images.forEach((image) => {
-      image.createdAt = moment(image.createdAt).format("MMM Do YY");
+      image.uploadedAt = moment(image.uploadedAt).format("MMM Do YY");
     })
     res.render('user/dashboard', { User: req.session.user, images: user.images });
   })
