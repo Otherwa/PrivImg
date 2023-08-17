@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.css" rel="stylesheet" />
     <link href="/dist/output.css" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+    <path d='M50 0c-27.6 0-50 22.4-50 50s22.4 50 50 50 50-22.4 50-50-22.4-50-50-50zm0 80c-17.6 0-32-14.4-32-32s14.4-32 32-32 32 14.4 32 32-14.4 32-32 32zm0-49c-1.1 0-2 .9-2 2v30c0 1.1.9 2 2 2s2-.9 2-2v-30c0-1.1-.9-2-2-2z' fill='white'/>
+</svg>">
+
+
 </head>
 
 <body class="p-2 bg-gray-50 dark:bg-black" style="height: 150vh;">
@@ -34,27 +40,25 @@
                 <li>
                     <div class="flex items-center space-x-4">
                         <div class="font-medium dark:text-white">
-                            <div class="px-2">
-                                <span
-                                    class="bg-blue-100 m-2 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-black dark:text-blue-400 border border-blue-400">
-                                    <%= User.email %>
-                                </span>
-                                <span
-                                    class="bg-gray-100 m-2 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded mr-2 dark:bg-black dark:text-gray-400 border border-gray-500">
-                                    <svg class="w-2.5 h-2.5 mr-1.5" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                        <path
-                                            d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
-                                    </svg>
-                                    <%= User.accountCreatedAt %>
-                                </span>
-                            </div>
-
+                            <span
+                                class="bg-blue-100 m-2 text-sm text-blue-800 font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                <%= User.email %>
+                            </span>
+                            <span
+                                class="bg-gray-100 m-2 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded mr-2 dark:bg-gray-700 dark:text-gray-400 border border-gray-500">
+                                <svg class="w-2.5 h-2.5 mr-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
+                                </svg>
+                                <%= User.accountCreatedAt %>
+                            </span>
                         </div>
+                    </div>
                 </li>
                 <li>
                     <a href="/user/dashboard"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-black group">
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                             viewBox="0 0 22 21">
@@ -67,8 +71,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="./upload"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-black group">
+                    <a href="/user/upload"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                             viewBox="0 0 18 18">
@@ -77,12 +81,12 @@
                         </svg>
                         <span class="flex-1 ml-3 whitespace-nowrap">Upload</span>
                         <span
-                            class="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-black dark:text-gray-300">(Beta)</span>
+                            class="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">(Beta)</span>
                     </a>
                 </li>
                 <li>
                     <a href="/user/auth/logout"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-black group">
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -97,11 +101,11 @@
 
     <div class="px-8"
         style="height: 84vh;margin-top:12rem;display: flex;flex-direction: column;align-items: center;justify-content: center;">
-        <div class="grid justify-center">
+        <div class="grid justify-center" id="photos">
             <div>
                 <div class="py-2">
-                    <img class="h-auto max-w-full rounded-lg" src="data:image/png;base64,<%= image.imageUrl %>"
-                        alt="img">
+                    <img class="h-auto max-w-full rounded-lg hidden images"
+                        src="data:image/png;base64,<%= image.imageUrl %>" alt="img">
                 </div>
                 <span
                     class="bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded mr-2 dark:bg-black dark:text-gray-400 border border-gray-500">
@@ -114,16 +118,11 @@
                 </span>
             </div>
             <br>
-            <div class="flex overflow-hidden bg-white border divide-x rounded-lg rtl:flex-row-reverse dark:bg-gray-900 dark:border-gray-700 dark:divide-gray-700"
-                style="width:fit-content">
+            <div class="flex gap-3" style="width:fit-content">
                 <a href="data:image/png;base64,<%= image.imageUrl %>" download
-                    class="px-4 py-2 bg-yellow-300 text-sm font-medium text-black-600 transition-colors duration-200 sm:text-base sm:px-6 dark:hover:bg-black-800 dark:text-black-300 hover:bg-gray-100">
-                    Download
-                </a>
-                <button onclick="deleteImage('<%= image._id %>')"
-                    class="px-4 py-2 bg-red-600 text-sm font-medium text-gray-600 transition-colors duration-200 sm:text-base sm:px-6 dark:hover:bg-black dark:text-gray-300 hover:bg-gray-100">
-                    Delete
-                </button>
+                    class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 transition-colors duration-300 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">Download</a>
+                <button onclick="deleteImage('<%= image._id %>')" type="button"
+                    class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 transition-colors duration-300 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Delete</button>
             </div>
         </div>
 
@@ -148,6 +147,29 @@
         }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+        integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(window).on("load", function () {
+
+            const pageContent = $("#photos");
+            const images = $('.images');
+
+            images.each(function (index, img) {
+                const $img = $(img);
+                setTimeout(function () {
+                    $img.fadeIn(250);
+                }, index * 250); // Adjust the delay time as needed
+            });
+
+
+            // Hide loader when the entire page is loaded
+
+            pageContent.fadeIn(500);
+
+        });
+    </script>
 </body>
 
 </html>

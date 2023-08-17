@@ -6,9 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.css" rel="stylesheet" />
     <link href="/dist/output.css" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+    <path d='M50 0c-27.6 0-50 22.4-50 50s22.4 50 50 50 50-22.4 50-50-22.4-50-50-50zm0 80c-17.6 0-32-14.4-32-32s14.4-32 32-32 32 14.4 32 32-14.4 32-32 32zm0-49c-1.1 0-2 .9-2 2v30c0 1.1.9 2 2 2s2-.9 2-2v-30c0-1.1-.9-2-2-2z' fill='white'/>
+</svg>">
+
+
 </head>
 
-<body class="p-2 bg-gray-50 dark:bg-black">
+<body class="p-2 bg-gray-50 dark:bg-black m-2">
     <!-- Header -->
     <nav class="bg-white border-gray-200 dark:bg-black">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto lg:p-4">
@@ -93,7 +99,7 @@
         </div>
     </aside>
 
-    <div class="px-8 mt-4">
+    <div class="hidden px-8 mt-4" id="photos">
         <div class="grid grid-cols-3 gap-4">
             <% if (images.length===0) { %>
                 <h1
@@ -103,8 +109,8 @@
                     <% images.forEach(image=> { %>
                         <div class="relative">
                             <a href="./dashboard/image/<%= image._id %>">
-                                <img class="h-auto w-full rounded-lg" src="data:image/png;base64,<%= image.imageUrl %>"
-                                    alt="img">
+                                <img class="hidden images h-auto w-full rounded-lg"
+                                    src="data:image/png;base64,<%= image.imageUrl %>" alt="img">
                                 <div
                                     class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent px-4 py-2 rounded-b-lg text-white text-xs">
                                     <h3
@@ -117,9 +123,32 @@
         <% }); %>
             <% } %>
     </div>
-    </div>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+        integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(window).on("load", function () {
+
+            const pageContent = $("#photos");
+            const images = $('.images');
+
+            images.each(function (index, img) {
+                const $img = $(img);
+                setTimeout(function () {
+                    $img.fadeIn(250);
+                }, index * 250); // Adjust the delay time as needed
+            });
+
+
+            // Hide loader when the entire page is loaded
+
+            pageContent.fadeIn(500);
+
+        });
+    </script>
 </body>
 
 </html>
