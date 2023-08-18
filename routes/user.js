@@ -85,13 +85,12 @@ router.route('/dashboard')
     }
 
     try {
-      const user = await User.findOne({ _id: req.session.user.userId }).limit(1); // Use limit(1) to get a single document
+      const user = await User.findOne({ _id: req.session.user.userId }).limit(1);
 
       if (!user) {
         return res.status(404).send('User not found');
       }
 
-      // Process timestamps
       const processedImages = user.images.map((image) => ({
         ...image.toObject(),
         uploadedAt: moment(image.uploadedAt).format("LL"),
@@ -226,9 +225,8 @@ const postImageUpload = async (req, res, next) => {
     // Convert the processed image buffer back to base64
     const processedImageBase64 = processedImageBuffer.toString('base64');
 
-
     const newImage = {
-      imageUrl: processedImageBase64, // Use the compressed image buffer
+      imageUrl: processedImageBase64,
       uploadedAt: new Date(),
     };
 
@@ -239,6 +237,10 @@ const postImageUpload = async (req, res, next) => {
       { new: true } // Return the updated document
     );
 
+    // Cache the updated user's images
+    const cacheKey = `userImages_${req.session.user.userId}`;
+    cache.set(cacheKey, updatedUser.images);
+
     res.status(200).json({ status: 200 });
   } catch (error) {
     console.error('Image upload error:', error);
@@ -247,6 +249,7 @@ const postImageUpload = async (req, res, next) => {
 };
 
 router.post('/upload', Auth, upload.single('compressedImage'), postImageUpload);
+
 
 // ? logout
 router.get('/auth/logout', (req, res) => {
