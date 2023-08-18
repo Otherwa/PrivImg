@@ -7,8 +7,12 @@ const bcrypt = require('bcrypt');
 const User = require('../config/model/user')
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
+const sharp = require('sharp');
+const NodeCache = require("node-cache");
 /* GET users listing. */
 const multer = require('multer');
+
+const cache = new NodeCache({ stdTTL: 14400 });
 const upload = multer(); // Create a multer instance
 
 connect();
@@ -71,13 +75,36 @@ router.route('/auth/register')
 
 router.route('/dashboard')
   .get(Auth, async (req, res) => {
-    const user = await User.findOne({ _id: req.session.user.userId }).limit(10);
-    // You can access req.userId here, which contains the authenticated user's ID
-    // timestamp process
-    user.images.forEach((image) => {
-      image.At = moment(image.uploadedAt).format("LL");
-    })
-    res.render('user/dashboard', { User: req.session.user, images: user.images });
+    const cacheKey = `userImages_${req.session.user.userId}`;
+
+    // Check if the images are already cached
+    const cachedImages = cache.get(cacheKey);
+    if (cachedImages) {
+      console.log("Using cached images");
+      return res.render('user/dashboard', { User: req.session.user, images: cachedImages });
+    }
+
+    try {
+      const user = await User.findOne({ _id: req.session.user.userId }).limit(1); // Use limit(1) to get a single document
+
+      if (!user) {
+        return res.status(404).send('User not found');
+      }
+
+      // Process timestamps
+      const processedImages = user.images.map((image) => ({
+        ...image.toObject(),
+        uploadedAt: moment(image.uploadedAt).format("LL"),
+      }));
+
+      // Cache the processed images for 2 hours
+      cache.set(cacheKey, processedImages);
+
+      res.render('user/dashboard', { User: req.session.user, images: processedImages });
+    } catch (error) {
+      console.error('Error fetching user images:', error);
+      res.status(500).send('Internal Server Error');
+    }
   })
   .delete(Auth, async (req, res) => {
     try {
@@ -111,6 +138,14 @@ router.get('/dashboard/image/:id', async (req, res, next) => {
   try {
     const userId = req.session.user.userId;
     const imageId = req.params.id;
+    const cacheKey = `userImage_${userId}_${imageId}`;
+
+    // Check if the image is already cached
+    const cachedImage = cache.get(cacheKey);
+    if (cachedImage) {
+      console.log("Using cached image");
+      return res.status(200).render('user/img', { User: req.session.user, image: cachedImage });
+    }
 
     const user = await User.findOne({ _id: userId });
     if (!user) {
@@ -118,11 +153,20 @@ router.get('/dashboard/image/:id', async (req, res, next) => {
     }
 
     const image = user.images.find(img => img._id.toString() === imageId);
-    image.uploadedAt = moment(image.uploadedAt).format('LL');
     if (!image) {
       return res.status(404).json({ status: 404, message: 'Image not found' });
     }
-    res.status(200).render('user/img', { User: req.session.user, image: image });
+
+    // Process timestamp
+    const processedImage = {
+      ...image.toObject(),
+      uploadedAt: moment(image.uploadedAt).format('LL')
+    };
+
+    // Cache the processed image for 2 hours
+    cache.set(cacheKey, processedImage);
+
+    res.status(200).render('user/img', { User: req.session.user, image: processedImage });
   } catch (error) {
     console.error('Image retrieval error:', error);
     res.status(500).json({ status: 500, error: 'Image retrieval error' });
@@ -157,27 +201,46 @@ router.route('/upload')
   .get(Auth, (req, res) => {
     res.status(200).render('user/upload', { User: req.session.user });
   })
-  .post(Auth, upload.single('compressedImage'), async (req, res, next) => {
-    try {
-      const compressedImage = req.body.compressedImage;
-      const newImage = {
-        imageUrl: compressedImage,
-        uploadedAt: new Date()
-      };
 
-      // Find the user by ID and update the images sub-array
-      const updatedUser = await User.findOneAndUpdate(
-        { _id: req.session.user.userId },
-        { $push: { images: newImage } },
-        { new: true } // Return the updated document
-      );
-
-      res.status(200).json({ status: 200 });
-    } catch (error) {
-      console.error('Image upload error:', error);
-      res.status(500).json({ status: 500, error: 'Image upload error' });
+// ! Compression middleware
+const postImageUpload = async (req, res, next) => {
+  try {
+    if (!req.body.compressedImage) {
+      return res.status(400).json({ status: 400, error: 'No image file provided' });
     }
-  })
+
+    // Decode the base64 image data into a Buffer
+    const compressedImageBuffer = Buffer.from(req.body.compressedImage, 'base64');
+
+    // Process the image using sharp
+    const processedImageBuffer = await sharp(compressedImageBuffer)
+      .jpeg({ quality: 60 }) // Adjust the compression quality as needed
+      .toBuffer();
+
+    // Convert the processed image buffer back to base64
+    const processedImageBase64 = processedImageBuffer.toString('base64');
+
+
+    const newImage = {
+      imageUrl: processedImageBase64, // Use the compressed image buffer
+      uploadedAt: new Date(),
+    };
+
+    // Find the user by ID and update the images sub-array
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: req.session.user.userId },
+      { $push: { images: newImage } },
+      { new: true } // Return the updated document
+    );
+
+    res.status(200).json({ status: 200 });
+  } catch (error) {
+    console.error('Image upload error:', error);
+    res.status(500).json({ status: 500, error: 'Image upload error' });
+  }
+};
+
+router.post('/upload', Auth, upload.single('compressedImage'), postImageUpload);
 
 // ? logout
 router.get('/auth/logout', (req, res) => {
