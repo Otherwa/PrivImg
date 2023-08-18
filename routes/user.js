@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const sharp = require('sharp');
 const NodeCache = require("node-cache");
+const mongoose = require('mongoose');
 /* GET users listing. */
 const multer = require('multer');
 
@@ -178,17 +179,27 @@ router.delete('/dashboard/image/:id', async (req, res, next) => {
     const userId = req.session.user.userId;
     const imageId = req.params.id;
 
-
-    // First, remove the image from the cache if it's cached
-    const cacheKey = `userImage_${userId}_${imageId}`;
-    cache.del(cacheKey);
+    // Convert the imageId to a Mongoose ObjectId instance
+    const imageObjectId = new mongoose.Types.ObjectId(imageId);
 
 
+    // Find the user and update the images array
     const updatedUser = await User.findOneAndUpdate(
       { _id: userId },
-      { $pull: { images: { _id: imageId } } },
+      { $pull: { images: { _id: imageObjectId } } },
       { new: true }
     );
+
+    // Cache the updated user's images
+    // Cache the updated user's images
+    const cacheKey = `userImages_${req.session.user.userId}`;
+    const processedImages = updatedUser.images.map((image) => ({
+      ...image.toObject(),
+      uploadedAt: moment(image.uploadedAt).format("LL"),
+    }));
+
+    // Cache the processed images for 2 hours
+    cache.set(cacheKey, processedImages);
 
     if (!updatedUser) {
       return res.status(404).json({ status: 404, message: 'User not found' });
@@ -230,16 +241,26 @@ const postImageUpload = async (req, res, next) => {
       uploadedAt: new Date(),
     };
 
-    // Find the user by ID and update the images sub-array
+    // Find the user by ID and update the images sub-array using $push
     const updatedUser = await User.findOneAndUpdate(
       { _id: req.session.user.userId },
       { $push: { images: newImage } },
       { new: true } // Return the updated document
     );
 
+    if (!updatedUser) {
+      return res.status(404).json({ status: 404, error: 'User not found' });
+    }
+
     // Cache the updated user's images
     const cacheKey = `userImages_${req.session.user.userId}`;
-    cache.set(cacheKey, updatedUser.images);
+    const processedImages = updatedUser.images.map((image) => ({
+      ...image.toObject(),
+      uploadedAt: moment(image.uploadedAt).format("LL"),
+    }));
+
+    // Cache the processed images for 2 hours
+    cache.set(cacheKey, processedImages);
 
     res.status(200).json({ status: 200 });
   } catch (error) {
