@@ -179,6 +179,12 @@ router.delete('/dashboard/image/:id', async (req, res, next) => {
     const userId = req.session.user.userId;
     const imageId = req.params.id;
 
+
+    // First, remove the image from the cache if it's cached
+    const cacheKey = `userImage_${userId}_${imageId}`;
+    cache.del(cacheKey);
+
+
     const updatedUser = await User.findOneAndUpdate(
       { _id: userId },
       { $pull: { images: { _id: imageId } } },
