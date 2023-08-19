@@ -136,6 +136,7 @@ router.route('/dashboard')
 // view
 router.get('/dashboard/image/:id', async (req, res, next) => {
   try {
+    console.log(req.session);
     const userId = req.session.user.userId;
     const imageId = req.params.id;
     const cacheKey = `userImage_${userId}_${imageId}`;

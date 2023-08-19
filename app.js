@@ -14,7 +14,8 @@ var app = express();
 app.use(session({
   secret: process.env.SECRET_KEY,
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: { secure: false }
 }));
 
 // view engine setup

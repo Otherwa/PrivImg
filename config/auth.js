@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config()
 const verifyToken = (req, res, next) => {
     const token = req.cookies.token || ''; // Get the token from the cookie or header as needed
-    if (!token) {
+    if (!token || !req.session.user) {
         return res.redirect('/user/auth/login'); // Redirect to login if no token is present
     }
 
