@@ -2,9 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { connect } = require('../config/config')
 const Auth = require('../config/auth');
-const preAuth = require('../config/preauth');
 const bcrypt = require('bcrypt');
-const localStorage = require('localStorage')
 const User = require('../config/model/user')
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
@@ -39,17 +37,12 @@ router.route('/auth/login')
 
       const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: '1h' });
 
-      // Store user-related information in local storage
-      const userLocalStorageData = {
-        userId: user._id,
-        email: user.email,
-        accountCreatedAt: moment(user.createdAt).format('LL')
-      };
-
-      localStorage.setItem('user', JSON.stringify(userLocalStorageData));
 
       // Set the token as a cookie or in the response header as needed
-      res.cookie('token', token);
+      res.cookie('token', token, { maxAge: 3600000 });
+      res.cookie('userId', user._id, { maxAge: 3600000 });
+      res.cookie('email', user.email, { maxAge: 3600000 });
+      res.cookie('accountCreatedAt', moment(user.createdAt).format('LL'), { maxAge: 3600000 });
 
       res.redirect('/user/dashboard');
     } catch (error) {
@@ -79,7 +72,11 @@ router.route('/auth/register')
 
 router.route('/dashboard')
   .get(Auth, async (req, res) => {
-    const curuser = JSON.parse(localStorage.getItem('user'));
+    const curuser = {
+      userId: req.cookies.userId,
+      email: req.cookies.email,
+      accountCreatedAt: req.cookies.accountCreatedAt
+    };
     const cacheKey = `userImages_${curuser.userId}`;
     console.log(curuser);
     // Check if the images are already cached
@@ -140,7 +137,11 @@ router.route('/dashboard')
 // view
 router.get('/dashboard/image/:id', async (req, res, next) => {
   try {
-    const curuser = JSON.parse(localStorage.getItem('user'));
+    const curuser = {
+      userId: req.cookies.userId,
+      email: req.cookies.email,
+      accountCreatedAt: req.cookies.accountCreatedAt
+    };
     const userId = curuser.userId;
     const imageId = req.params.id;
     const cacheKey = `userImage_${userId}_${imageId}`;
@@ -181,7 +182,11 @@ router.get('/dashboard/image/:id', async (req, res, next) => {
 // delete
 router.delete('/dashboard/image/:id', async (req, res, next) => {
   try {
-    const curuser = JSON.parse(localStorage.getItem('user'));
+    const curuser = {
+      userId: req.cookies.userId,
+      email: req.cookies.email,
+      accountCreatedAt: req.cookies.accountCreatedAt
+    };
     const userId = curuser.userId;
     const imageId = req.params.id;
 
@@ -221,14 +226,22 @@ router.delete('/dashboard/image/:id', async (req, res, next) => {
 
 router.route('/upload')
   .get(Auth, (req, res) => {
-    const curuser = JSON.parse(localStorage.getItem('user'));
+    const curuser = {
+      userId: req.cookies.userId,
+      email: req.cookies.email,
+      accountCreatedAt: req.cookies.accountCreatedAt
+    };
     res.status(200).render('user/upload', { User: curuser });
   })
 
 // ! Compression middleware
 const postImageUpload = async (req, res, next) => {
   try {
-    const curuser = JSON.parse(localStorage.getItem('user'));
+    const curuser = {
+      userId: req.cookies.userId,
+      email: req.cookies.email,
+      accountCreatedAt: req.cookies.accountCreatedAt
+    };
     const compressedImageArray = JSON.parse(req.body.compressedImages);
     if (compressedImageArray.length === 0) {
       return res.status(400).json({ status: 400, error: 'No image files provided' });
@@ -289,7 +302,7 @@ router.post('/upload', Auth, upload.single('compressedImage'), postImageUpload);
 router.get('/auth/logout', (req, res) => {
   // Clear the token from the client's browser by setting it to an expired value
   res.clearCookie('token');
-  localStorage.deleteItem('user');
+  res.clearCookie('user');
   // Redirect to a desired location after logout
   res.redirect('/user/auth/login');
 });
