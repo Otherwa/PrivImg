@@ -38,7 +38,7 @@ router.route('/auth/login')
 
       // Create a JWT token
       const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: '1h' });
-
+      // * minor issue #11
       // user details
       req.session.user = {
         userId: user._id,
