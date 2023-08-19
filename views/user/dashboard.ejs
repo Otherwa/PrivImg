@@ -6,12 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.css" rel="stylesheet" />
     <link href="/dist/output.css" rel="stylesheet">
+    <link href="/dist/base.css" rel="stylesheet">
     <link rel="icon" href="data:image/svg+xml,
 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
     <path d='M50 0c-27.6 0-50 22.4-50 50s22.4 50 50 50 50-22.4 50-50-22.4-50-50-50zm0 80c-17.6 0-32-14.4-32-32s14.4-32 32-32 32 14.4 32 32-14.4 32-32 32zm0-49c-1.1 0-2 .9-2 2v30c0 1.1.9 2 2 2s2-.9 2-2v-30c0-1.1-.9-2-2-2z' fill='white'/>
 </svg>">
 
-
+    <style>
+        @media (max-width: 768px) {
+            .images {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
 
 <body class="p-2 bg-gray-50 dark:bg-black m-2">
@@ -29,6 +36,9 @@
                     </path>
                 </svg>
             </button>
+            <div class="px-4">
+                <span class="animate-pulse flex w-3 h-3 bg-yellow-300 rounded-full"></span>
+            </div>
         </div>
     </nav>
 
@@ -99,8 +109,8 @@
         </div>
     </aside>
 
-    <div class="hidden px-8 mt-4" id="photos">
-        <div class="grid grid-cols-3 gap-4">
+    <div class="hidden sm:px-4 lg:px-8 mt-4" id="photos">
+        <div class="grid grid-cols-2 xl:grid-cols-5 2xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-3  gap-4">
             <% if (images.length===0) { %>
                 <h1
                     class="mb-4 py-8 px-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
@@ -113,10 +123,10 @@
                                     src="data:image/png;base64,<%= image.imageUrl %>" alt="img">
                                 <div
                                     class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent px-4 py-2 rounded-b-lg text-white text-xs">
-                                    <h3
-                                        class="hidden images mb-4 font-extrabold leading-none tracking-tight text-gray-900 md:text-2xl lg:text-4xl dark:text-white">
+                                    <span
+                                        class="hidden images mb-4 font-extrabold leading-none tracking-tight sm:text-sm md:text-2xl lg:text-4xl dark:text-gray-500">
                                         <%= image.uploadedAt %>
-                                    </h3>
+                                    </span>
                             </a>
                         </div>
         </div>
@@ -138,8 +148,8 @@
             images.each(function (index, img) {
                 const $img = $(img);
                 setTimeout(function () {
-                    $img.fadeIn(250);
-                }, index * 250); // Adjust the delay time as needed
+                    $img.fadeIn(100);
+                }, index * 100); // Adjust the delay time as needed
             });
 
 

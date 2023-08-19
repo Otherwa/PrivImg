@@ -221,30 +221,32 @@ router.route('/upload')
 // ! Compression middleware
 const postImageUpload = async (req, res, next) => {
   try {
-    if (!req.body.compressedImage) {
-      return res.status(400).json({ status: 400, error: 'No image file provided' });
+    const compressedImageArray = JSON.parse(req.body.compressedImages);
+    if (compressedImageArray.length === 0) {
+      return res.status(400).json({ status: 400, error: 'No image files provided' });
     }
 
-    // Decode the base64 image data into a Buffer
-    const compressedImageBuffer = Buffer.from(req.body.compressedImage, 'base64');
+    const newImages = [];
 
-    // Process the image using sharp
-    const processedImageBuffer = await sharp(compressedImageBuffer)
-      .jpeg({ quality: 60 }) // Adjust the compression quality as needed
-      .toBuffer();
+    for (const compressedImageBase64 of compressedImageArray) {
+      const compressedImageBuffer = Buffer.from(compressedImageBase64, 'base64');
 
-    // Convert the processed image buffer back to base64
-    const processedImageBase64 = processedImageBuffer.toString('base64');
+      const processedImageBuffer = await sharp(compressedImageBuffer)
+        .jpeg({ quality: 49 }) // Adjust the compression quality as needed
+        .toBuffer();
 
-    const newImage = {
-      imageUrl: processedImageBase64,
-      uploadedAt: new Date(),
-    };
+      const processedImageBase64 = processedImageBuffer.toString('base64');
+
+      newImages.push({
+        imageUrl: processedImageBase64,
+        uploadedAt: new Date(),
+      });
+    }
 
     // Find the user by ID and update the images sub-array using $push
     const updatedUser = await User.findOneAndUpdate(
       { _id: req.session.user.userId },
-      { $push: { images: newImage } },
+      { $push: { images: { $each: newImages } } },
       { new: true } // Return the updated document
     );
 
@@ -260,13 +262,16 @@ const postImageUpload = async (req, res, next) => {
     }));
 
     // Cache the processed images for 2 hours
-    cache.set(cacheKey, processedImages);
+    // Note: 'cache' needs to be defined and implemented using a caching mechanism
+    // Replace with your actual caching implementation
+    cache.set(cacheKey, processedImages, 7200); // Cache for 2 hours
 
     res.status(200).json({ status: 200 });
   } catch (error) {
     console.error('Image upload error:', error);
     res.status(500).json({ status: 500, error: 'Image upload error' });
   }
+
 };
 
 router.post('/upload', Auth, upload.single('compressedImage'), postImageUpload);
