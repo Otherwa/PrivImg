@@ -37,19 +37,34 @@ Privimage is a self-hosted image storage solution built using Node.js and MongoD
 
    ### Configuration
 
-1. Rename `.env.example` to `.env`.
-2. Open `.env` and provide values for the environment variables.
+   MongoDB Configuration
+1. Create a MongoDB Atlas account or log in to your existing account.
+2. Create a new cluster or select an existing cluster.
+3. In your cluster's dashboard, click on "Connect" to get your connection string.
 
-## Usage
+Replace <username>, <password>, and <cluster_name> in the following connection string with your MongoDB Atlas credentials and cluster name:
 
-Explain how to use or run the project once it's set up.
+```
+MONGO=mongodb+srv://<username>:<password>@<cluster_name>.mongodb.net/?retryWrites=true&w=majority
+Copy the updated connection string and paste it into your project's configuration, replacing the existing MONGO value.
+```
+### Application Secret Key
+   Generate a strong and secure secret key for your application. This key will be used for encryption and security purposes.
 
-## Environment Variables
+   Replace <your_secret_key> with your generated secret key:
 
-| Variable | Description |
-|----------|-------------|
-| VAR1     | Description |
-| VAR2     | Description |
+```
+   SECRET_KEY=<your_secret_key>
+   Copy the updated secret key and paste it into your project's configuration, replacing the existing SECRET_KEY value.
+```
+
+### Final Configuration
+   After completing the MongoDB and secret key configurations, your configuration file (config.env or similar) should look like this:
+```
+   MONGO=mongodb+srv://<username>:<password>@<cluster_name>.mongodb.net/?retryWrites=true&w=majority
+   SECRET_KEY=<your_secret_key>
+SECRET_KEY=<your_secret_key>
+   ```
 
 5. **Start the Server:**
 
