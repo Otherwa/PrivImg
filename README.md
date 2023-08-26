@@ -35,7 +35,23 @@ Privimage is a self-hosted image storage solution built using Node.js and MongoD
 
    Update the `config.js` file with your MongoDB connection settings.
 
-4. **Start the Server:**
+   ### Configuration
+
+1. Rename `.env.example` to `.env`.
+2. Open `.env` and provide values for the environment variables.
+
+## Usage
+
+Explain how to use or run the project once it's set up.
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| VAR1     | Description |
+| VAR2     | Description |
+
+5. **Start the Server:**
 
    ```bash
    npm start
