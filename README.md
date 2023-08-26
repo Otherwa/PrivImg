@@ -2,6 +2,13 @@
 
 Privimage is a self-hosted image storage solution built using Node.js and MongoDB. It allows you to securely store and retrieve images in a base64 compressed format, making them easy to access and transmit. This README provides an overview of the installation process and basic usage instructions.
 
+# SnapShots
+
+![Screenshot 2023-08-26 203426](https://github.com/Otherwa/PrivImg/assets/67428572/7f33df3c-abf9-4699-bcfb-332d449004d5)
+
+![Screenshot 2023-08-26 203227](https://github.com/Otherwa/PrivImg/assets/67428572/cc0838dc-9705-43ca-b72b-4eb5515149bb)
+
+
 ## Features
 
 - Securely store images on your own server.
