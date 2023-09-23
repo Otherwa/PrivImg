@@ -307,4 +307,12 @@ router.get('/auth/logout', (req, res) => {
   res.redirect('/user/auth/login');
 });
 
+
+// ? AJAX CAll
+router.get('/getimages', (req, res) => {
+  // Check if the image exists and send it
+  res.json({ 'status': 200 });
+
+});
+
 module.exports = router;

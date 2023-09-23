@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <title>Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.css" rel="stylesheet" />
     <link href="/dist/output.css" rel="stylesheet">
@@ -124,41 +125,42 @@
                                 <div
                                     class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent px-4 py-2 rounded-b-lg text-white text-xs">
                                     <span
-                                        class="hidden images mb-4 font-extrabold leading-none tracking-tight sm:text-sm md:text-2xl lg:text-4xl dark:text-gray-500">
+                                        class="hidden images mb-4 font-extrabold leading-none tracking-tight text-lg sm:text-sm md:text-2xl lg:text-4xl dark:text-gray-500">
                                         <%= image.uploadedAt %>
                                     </span>
+                                </div>
                             </a>
                         </div>
+                        <% }); %>
+                            <% } %>
         </div>
-        <% }); %>
-            <% } %>
-    </div>
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
-        integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        $(window).on("load", function () {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+            integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="/javascripts/index.js" type="text/javascript"></script>
+        <script>
+            $(window).on("load", function () {
 
-            const pageContent = $("#photos");
-            const images = $('.images');
+                const pageContent = $("#photos");
+                const images = $('.images');
 
-            images.each(function (index, img) {
-                const $img = $(img);
-                setTimeout(function () {
-                    $img.fadeIn(100);
-                }, index * 100); // Adjust the delay time as needed
+                images.each(function (index, img) {
+                    const $img = $(img);
+                    setTimeout(function () {
+                        $img.fadeIn(100);
+                    }, index * 100); // Adjust the delay time as needed
+                });
+
+
+                // Hide loader when the entire page is loaded
+
+                pageContent.fadeIn(500);
+
             });
-
-
-            // Hide loader when the entire page is loaded
-
-            pageContent.fadeIn(500);
-
-        });
-    </script>
+        </script>
 </body>
 
 </html>
