@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www",
-    "tailwind": "npx tailwindcss -i ./src/input.css -o .public//dist/output.css --watch"
+    "dev": "node ./bin/www",
+    "tailwind": "npx tailwindcss -i ./src/input.css -o .public//stylesheets/output.css --watch"
   },
   "dependencies": {
     "apexcharts": "^3.41.1",
