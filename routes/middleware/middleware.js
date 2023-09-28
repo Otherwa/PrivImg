@@ -1,7 +1,8 @@
 const NodeCache = require("node-cache");
 const cache = new NodeCache({ stdTTL: 14400 });
 const moment = require('moment');
-const mongoose = require('mongoose');
+const User = require('../../config/model/user')
+const sharp = require('sharp');
 
 // * cache key
 // ! Compression middleware
@@ -50,17 +51,43 @@ const postImageUpload = async (req, res, next) => {
             return res.status(404).json({ status: 404, error: 'User not found' });
         }
 
-        // Cache the updated user's images
         const processedImages = updatedUser.images.map((image) => ({
             ...image.toObject(),
             uploadedAt: moment(image.uploadedAt).format("LL"),
         }));
 
-        // Cache the processed images for 2 hours
-        // Note: 'cache' needs to be defined and implemented using a caching mechanism
-        // Replace with your actual caching implementation
-        // Group images by date
-        // todo :re_useable block
+        const groupedImages = {};
+
+        processedImages.forEach((image) => {
+            if (!groupedImages[image.uploadedAt]) {
+                groupedImages[image.uploadedAt] = [];
+            }
+            groupedImages[image.uploadedAt].push(image);
+        });
+
+        // Create an array to store the divs for each date
+        const dateDivs = [];
+
+        // Sort the dates in descending order (most recent first)
+        const sortedDates = Object.keys(groupedImages).sort((a, b) => {
+            const dateA = moment(a, "LL");
+            const dateB = moment(b, "LL");
+            return dateB - dateA;
+        });
+
+        // Render images grouped by date
+        sortedDates.forEach((date) => {
+            const imagesForDate = groupedImages[date];
+
+            // Create a div for each date
+            const dateDiv = {
+                date: date,
+                images: imagesForDate,
+            };
+
+            dateDivs.push(dateDiv);
+        });
+
         // Cache the processed images for 2 hours
         cache.set(cacheKey, dateDivs);
 
