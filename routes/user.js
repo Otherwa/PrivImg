@@ -6,7 +6,6 @@ const bcrypt = require('bcrypt');
 const User = require('../config/model/user')
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
-const sharp = require('sharp');
 const NodeCache = require("node-cache");
 const mongoose = require('mongoose');
 /* GET users listing. */
@@ -15,7 +14,14 @@ const multer = require('multer');
 const cache = new NodeCache({ stdTTL: 14400 });
 const upload = multer(); // Create a multer instance
 
-connect();
+
+// ! middlewares
+const { postImageUpload, cacher } = require('./middleware/middleware');
+
+// Await Connection
+(async () => {
+  await connect();
+})();
 
 router.route('/auth/login')
   .get((req, res, next) => {
@@ -71,7 +77,7 @@ router.route('/auth/register')
 
 
 router.route('/dashboard')
-  .get(Auth, async (req, res) => {
+  .get(Auth, async (req, res, next) => {
     const curuser = {
       userId: req.cookies.userId,
       email: req.cookies.email,
@@ -79,11 +85,12 @@ router.route('/dashboard')
     };
     const cacheKey = `userImages_${curuser.userId}`;
     console.log(curuser);
-    // Check if the images are already cached
-    const cachedImages = cache.get(cacheKey);
-    if (cachedImages) {
-      console.log("Using cached images");
-      return res.render('user/dashboard', { User: curuser, images: cachedImages });
+    // Check if the dateDivs are already cached
+    const cachedDateDivs = cache.get(cacheKey);
+
+    if (cachedDateDivs) {
+      console.log("Using cached dateDivs");
+      return res.render('user/dashboard', { User: curuser, dateDivs: cachedDateDivs });
     }
 
     try {
@@ -98,10 +105,14 @@ router.route('/dashboard')
         uploadedAt: moment(image.uploadedAt).format("LL"),
       }));
 
-      // Cache the processed images for 2 hours
-      cache.set(cacheKey, processedImages);
 
-      res.render('user/dashboard', { User: curuser, images: processedImages });
+      // ? Create an array to store the divs for each date return from cacher middleware
+      const dateDivs = cacher(processedImages, req, res, next);
+
+      // Cache the processed images for 2 hours
+      cache.set(cacheKey, dateDivs);
+
+      res.render('user/dashboard', { User: curuser, dateDivs: dateDivs });
     } catch (error) {
       console.error('Error fetching user images:', error);
       res.status(500).send('Internal Server Error');
@@ -209,8 +220,11 @@ router.delete('/dashboard/image/:id', async (req, res, next) => {
       uploadedAt: moment(image.uploadedAt).format("LL"),
     }));
 
+    // ? Create an array to store the divs for each date return from cacher middleware
+    const dateDivs = cacher(processedImages, req, res, next);
+
     // Cache the processed images for 2 hours
-    cache.set(cacheKey, processedImages);
+    cache.set(cacheKey, dateDivs);
 
     if (!updatedUser) {
       return res.status(404).json({ status: 404, message: 'User not found' });
@@ -234,66 +248,7 @@ router.route('/upload')
     res.status(200).render('user/upload', { User: curuser });
   })
 
-// ! Compression middleware
-const postImageUpload = async (req, res, next) => {
-  try {
-    const curuser = {
-      userId: req.cookies.userId,
-      email: req.cookies.email,
-      accountCreatedAt: req.cookies.accountCreatedAt
-    };
-    const compressedImageArray = JSON.parse(req.body.compressedImages);
-    if (compressedImageArray.length === 0) {
-      return res.status(400).json({ status: 400, error: 'No image files provided' });
-    }
 
-    const newImages = [];
-
-    for (const compressedImageBase64 of compressedImageArray) {
-      const compressedImageBuffer = Buffer.from(compressedImageBase64, 'base64');
-
-      const processedImageBuffer = await sharp(compressedImageBuffer)
-        .jpeg({ quality: 49 }) // Adjust the compression quality as needed
-        .toBuffer();
-
-      const processedImageBase64 = processedImageBuffer.toString('base64');
-
-      newImages.push({
-        imageUrl: processedImageBase64,
-        uploadedAt: new Date(),
-      });
-    }
-
-    // Find the user by ID and update the images sub-array using $push
-    const updatedUser = await User.findOneAndUpdate(
-      { _id: curuser.userId },
-      { $push: { images: { $each: newImages } } },
-      { new: true } // Return the updated document
-    );
-
-    if (!updatedUser) {
-      return res.status(404).json({ status: 404, error: 'User not found' });
-    }
-
-    // Cache the updated user's images
-    const cacheKey = `userImages_${curuser.userId}`;
-    const processedImages = updatedUser.images.map((image) => ({
-      ...image.toObject(),
-      uploadedAt: moment(image.uploadedAt).format("LL"),
-    }));
-
-    // Cache the processed images for 2 hours
-    // Note: 'cache' needs to be defined and implemented using a caching mechanism
-    // Replace with your actual caching implementation
-    cache.set(cacheKey, processedImages, 7200); // Cache for 2 hours
-
-    res.status(200).json({ status: 200 });
-  } catch (error) {
-    console.error('Image upload error:', error);
-    res.status(500).json({ status: 500, error: 'Image upload error' });
-  }
-
-};
 
 router.post('/upload', Auth, upload.single('compressedImage'), postImageUpload);
 
